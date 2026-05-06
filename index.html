@@ -13,7 +13,7 @@
       line-height: 1.6;
     }
     .container {
-      max-width: 980px;
+      max-width: 1080px;
       margin: 0 auto;
       padding: 48px 20px 72px;
     }
@@ -22,7 +22,7 @@
       margin-bottom: 36px;
     }
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.25rem;
       line-height: 1.2;
       margin-bottom: 8px;
     }
@@ -47,22 +47,40 @@
       margin-top: 0;
       margin-bottom: 12px;
     }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-      margin-top: 18px;
+    h3 {
+      font-size: 1.05rem;
+      margin: 18px 0 8px;
     }
-    .video-card {
+    .tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #333;
+      background: #f0f0f0;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin: 4px 4px 8px 0;
+    }
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+    .media-grid.two {
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    }
+    .media-card {
       border: 1px solid #eee;
       border-radius: 14px;
       padding: 14px;
       background: #fff;
     }
-    video {
+    video, img {
       width: 100%;
       border-radius: 10px;
       background: #000;
+      display: block;
     }
     .caption {
       margin-top: 10px;
@@ -71,8 +89,13 @@
     }
     .label {
       display: inline-block;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 4px;
+      color: #222;
+    }
+    .note {
+      color: #555;
+      font-size: 0.96rem;
     }
     footer {
       text-align: center;
@@ -91,66 +114,119 @@
   <div class="container">
     <header>
       <h1>Planning-to-Action Gap in Robot Foundation Models</h1>
-      <div class="subtitle">Qualitative examples: reasonable visual plans, unreliable action execution</div>
+      <div class="subtitle">Qualitative examples: reasonable plans, unreliable action execution</div>
       <div class="author">Jiyun Jang · Korea University</div>
     </header>
 
     <section>
       <h2>Overview</h2>
       <p>
-        Recent robot foundation models can often generate semantically reasonable future trajectories or videos in new environments.
-        However, these plans do not always translate into reliable executable robot actions.
-        This page shows simple qualitative examples of this <strong>planning-to-action gap</strong>.
+        Recent robot foundation models, including action-reasoning VLA models and world-action models, can often generate
+        semantically reasonable trajectories or videos in unseen environments. However, these plans do not always translate
+        into reliable executable robot actions. This page shows qualitative examples of this <strong>planning-to-action gap</strong>.
+      </p>
+      <p class="note">
+        The examples below compare planning outputs from MolmoAct and LingBot-VA with zero-shot action execution results in
+        LIBERO or a local lab setup.
       </p>
     </section>
 
     <section>
-      <h2>Example 1: Generated Plan vs. Executed Action</h2>
-      <div class="video-grid">
-        <div class="video-card">
-          <video controls muted playsinline>
-            <source src="videos/example1_generated_plan.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+      <h2>1. MolmoAct: Planning Results</h2>
+      <span class="tag">Model: MolmoAct</span>
+      <span class="tag">Output: 2D trajectory plan</span>
+      <span class="tag">Observation: planning is often reasonable</span>
+      <p>
+        MolmoAct can generate plausible trajectory plans for manipulation tasks, even in unseen environments. These examples
+        show planning results for both LIBERO and our local lab setup.
+      </p>
+
+      <div class="media-grid two">
+        <div class="media-card">
+          <img src="videos/molmoact_plan_libero.jpg" alt="MolmoAct planning result in LIBERO for picking up the black bowl" />
           <div class="caption">
-            <span class="label">Generated plan/video</span><br />
-            The model predicts a visually reasonable future trajectory for the task.
+            <span class="label">LIBERO planning result</span><br />
+            Task: <em>pick up the black bowl</em>. MolmoAct generates a reasonable trajectory plan in the LIBERO environment.
           </div>
         </div>
-        <div class="video-card">
-          <video controls muted playsinline>
-            <source src="videos/example1_executed_action.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+
+        <div class="media-card">
+          <img src="videos/molmoact_plan_ours.png" alt="MolmoAct planning result in local lab setup for picking up the white case" />
           <div class="caption">
-            <span class="label">Executed action</span><br />
-            The executed robot action fails to follow the intended plan reliably.
+            <span class="label">Local lab planning result</span><br />
+            Task: <em>pick up the white case</em>. MolmoAct also produces a plausible trajectory plan in our local robot setup.
           </div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2>Example 2: New Environment Failure</h2>
-      <div class="video-grid">
-        <div class="video-card">
+      <h2>2. MolmoAct: Zero-Shot Action Execution in LIBERO</h2>
+      <span class="tag">Model: MolmoAct</span>
+      <span class="tag">Environment: LIBERO</span>
+      <span class="tag">Task: pick up the black bowl</span>
+      <span class="tag">Observation: action execution fails</span>
+      <p>
+        Although the trajectory-level plan is reasonable, zero-shot action execution often fails. The robot action does not
+        reliably follow the intended trajectory, suggesting a gap between visual planning and executable control.
+      </p>
+
+      <div class="media-grid">
+        <div class="media-card">
           <video controls muted playsinline>
-            <source src="videos/example2_generated_plan.mp4" type="video/mp4" />
+            <source src="videos/episode_with_traces_1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div class="caption">
-            <span class="label">Generated plan/video</span><br />
-            The model captures the high-level task intent in a novel setup.
+            <span class="label">Execution example 1</span><br />
+            Zero-shot action rollout for <em>pick up the black bowl</em> in LIBERO.
           </div>
         </div>
-        <div class="video-card">
+
+        <div class="media-card">
           <video controls muted playsinline>
-            <source src="videos/example2_executed_action.mp4" type="video/mp4" />
+            <source src="videos/episode_with_traces_2.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div class="caption">
-            <span class="label">Executed action</span><br />
-            The robot action is misaligned with the generated plan, suggesting weak action grounding.
+            <span class="label">Execution example 2</span><br />
+            Another zero-shot rollout where execution is misaligned with the intended plan.
+          </div>
+        </div>
+
+        <div class="media-card">
+          <video controls muted playsinline>
+            <source src="videos/episode_with_traces_no_orien.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="caption">
+            <span class="label">Execution example without orientation control</span><br />
+            Zero-shot rollout without orientation control. The action still fails to reliably complete the task.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. LingBot-VA: Video Planning with a World-Action Model</h2>
+      <span class="tag">Model: LingBot-VA</span>
+      <span class="tag">Environment: LIBERO</span>
+      <span class="tag">Output: generated future video</span>
+      <p>
+        World-action models such as LingBot-VA can generate plausible future videos conditioned on a task. This suggests that
+        the model may capture useful high-level task structure and visual dynamics. However, reliable action execution remains
+        a separate challenge.
+      </p>
+
+      <div class="media-grid two">
+        <div class="media-card">
+          <video controls muted playsinline>
+            <source src="videos/lingbot_libero_10_video_generation.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="caption">
+            <span class="label">Generated video / planning result</span><br />
+            Task: <em>put both the alphabet soup and the tomato sauce in the basket</em>. LingBot-VA generates a plausible future video for the task.
           </div>
         </div>
       </div>
@@ -159,13 +235,14 @@
     <section>
       <h2>Interpretation</h2>
       <p>
-        These examples motivate studying whether current robot policies sufficiently understand the relationship between visual observations,
-        robot action coordinate systems, and embodiment-dependent action effects. Reducing this gap may be important for robust zero-shot manipulation.
+        These examples suggest that robot foundation models may possess useful high-level planning ability, but still struggle
+        to translate those plans into reliable low-level robot actions in new environments. This motivates studying action grounding,
+        hand-eye coordination, and the relationship between visual plans and robot action coordinate systems.
       </p>
     </section>
 
     <footer>
-      Replace the video files in <code>videos/</code> with your own qualitative results.
+      Planning-to-Action Gap in Robot Foundation Models · Jiyun Jang
     </footer>
   </div>
 </body>
