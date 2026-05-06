@@ -208,28 +208,46 @@
     </section>
 
     <section>
-      <h2>3. LingBot-VA: Video Planning with a World-Action Model</h2>
-      <span class="tag">Model: LingBot-VA</span>
-      <span class="tag">Environment: LIBERO</span>
-      <span class="tag">Output: generated future video</span>
-      <p>
-        World-action models such as LingBot-VA can generate plausible future videos conditioned on a task. This suggests that
-        the model may capture useful high-level task structure and visual dynamics. However, reliable action execution remains
-        a separate challenge.
-      </p>
+    <h2>3. LingBot-VA: Video Planning vs. Action Execution</h2>
 
-      <div class="media-grid two">
+    <span class="tag">Model: LingBot-VA</span>
+    <span class="tag">Environment: LIBERO</span>
+    <span class="tag">Task: put both the alphabet soup and the tomato sauce in the basket</span>
+
+    <p>
+        World-action models such as LingBot-VA can generate plausible future videos conditioned on a task instruction.
+        The generated future trajectory often captures the correct high-level task intent and object interactions.
+        However, reliable low-level action execution remains a separate challenge.
+    </p>
+
+    <div class="media-grid two">
+
         <div class="media-card">
-          <video controls muted playsinline>
+        <video controls muted playsinline>
             <source src="videos/lingbot_libero_10_video_generation.mp4" type="video/mp4" />
             Your browser does not support the video tag.
-          </video>
-          <div class="caption">
-            <span class="label">Generated video / planning result</span><br />
-            Task: <em>put both the alphabet soup and the tomato sauce in the basket</em>. LingBot-VA generates a plausible future video for the task.
-          </div>
+        </video>
+
+        <div class="caption">
+            <span class="label">Generated future video / planning result</span><br />
+            LingBot-VA generates a plausible future trajectory for the task:
+            <em>put both the alphabet soup and the tomato sauce in the basket</em>.
         </div>
-      </div>
+        </div>
+
+        <div class="media-card">
+        <video controls muted playsinline>
+            <source src="videos/lingbot_libero_10_action.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="caption">
+            <span class="label">Executed robot action</span><br />
+            Despite the reasonable generated future video, the executed robot action does not reliably follow the intended plan.
+        </div>
+        </div>
+
+    </div>
     </section>
 
     <section>
